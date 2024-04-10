@@ -26,6 +26,9 @@ import { StyledMenuBox } from "./test.styles";
 import getIcon from "./utils/getIcon";
 import { SubmitHandler, useForm } from "react-hook-form";
 import styles from "../src/components/mainInput/mainInput.styles";
+import { useQuery } from "react-query";
+import { getSocialsList } from "./utils/apis/main/mainApi";
+import { toast } from "react-toastify";
 
 interface SocialMediaListType {
   id: string;
@@ -43,8 +46,6 @@ const App: FC = () => {
     formState: { errors },
   } = useForm<SocialMediaListType>();
 
-  console.log(watch("link")); // watch input value by passing the name of it
-
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openAlertBox, setOpenAlertBox] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -52,6 +53,18 @@ const App: FC = () => {
     [{ id: "test@test", link: "https://google.com", type: "instagram" }]
   );
   const [currentItemId, setCurrentItemId] = useState<string>("");
+
+  const {
+    data: socialsList,
+    isLoading: socialsListLoading,
+    isError: socialsListError,
+  } = useQuery({
+    queryKey: ["getSocialsList"],
+    queryFn: () => getSocialsList(),
+    onError() {
+      toast.error("مشکلی در دریافت لیست بوجود آمده است");
+    },
+  });
   const handleOpenForm = (): void => {
     setOpenForm(true);
   };
@@ -263,10 +276,7 @@ const App: FC = () => {
                 <Button variant="outlined" onClick={handleCancelForm}>
                   انصراف
                 </Button>
-                <Button
-                  type="submit"
-                  variant="contained"
-                >
+                <Button type="submit" variant="contained">
                   {isEditing ? (
                     <Typography>
                       {`ویرایش مسیر ارتباطی
