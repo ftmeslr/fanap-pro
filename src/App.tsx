@@ -14,9 +14,9 @@ import {
   MenuItem,
   Select,
   Stack,
+  TextField,
   Typography,
 } from "@mui/material";
-import { useFormik } from "formik";
 import type { FC } from "react";
 import { useState } from "react";
 import AlertBox from "./components/AlertBox";
@@ -24,6 +24,9 @@ import MainInput from "./components/mainInput/mainInput";
 import SOCIAL_MEDIA_TYPES from "./constants";
 import { StyledMenuBox } from "./test.styles";
 import getIcon from "./utils/getIcon";
+import { SubmitHandler, useForm } from "react-hook-form";
+import styles from "../src/components/mainInput/mainInput.styles";
+
 interface SocialMediaListType {
   id: string;
   link: string;
@@ -31,6 +34,17 @@ interface SocialMediaListType {
 }
 
 const App: FC = () => {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    setValue,
+    getValues,
+    formState: { errors },
+  } = useForm<SocialMediaListType>();
+
+  console.log(watch("link")); // watch input value by passing the name of it
+
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openAlertBox, setOpenAlertBox] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
@@ -61,7 +75,6 @@ const App: FC = () => {
         item.link === values.link ||
         item.type === values.type
     );
-    // TODO: handle validation with formik
     const isOneValueEmpty =
       values.id === "" || values.link === "" || values.type === "";
 
@@ -102,38 +115,32 @@ const App: FC = () => {
     closeAlertBox();
   };
 
-  const formik = useFormik({
-    initialValues: { type: "", link: "", id: "" },
-    onReset: () => {
-      setIsEditing(false);
-    },
-    onSubmit: (values, { setSubmitting, resetForm }) => {
-      setTimeout(() => {
-        if (isEditing) {
-          editListItem(values);
-        } else {
-          addListItem(values);
-        }
-        setSubmitting(false);
-        resetForm();
-      }, 400);
-    },
-  });
-
   const editItem = (item: SocialMediaListType): void => {
     handleOpenForm();
     setIsEditing(true);
-    formik.setFieldValue("id", item.id);
-    formik.setFieldValue("link", item.link);
-    formik.setFieldValue("type", item.type);
+    setValue("id", item.id);
+    setValue("link", item.link);
+    setValue("type", item.type);
     setCurrentItemId(item.id);
   };
 
   const handleCancelForm = (): void => {
-    formik.resetForm();
     handleCloseForm();
   };
+  const { StyledMainInput } = styles;
 
+  const onSubmit: SubmitHandler<SocialMediaListType> = (values) => {
+    console.log("values", values);
+    setTimeout(() => {
+      if (isEditing) {
+        editListItem(values);
+      } else {
+        addListItem(values);
+      }
+      // onreset();
+      setIsEditing(false);
+    }, 400);
+  };
   return (
     <Stack
       sx={{
@@ -177,18 +184,17 @@ const App: FC = () => {
           )}
         </Button>
         <Collapse in={openForm} sx={{ marginTop: "20px" }}>
-          <form onSubmit={formik.handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <Card sx={{ backgroundColor: "#323d48", color: "white" }}>
               <CardHeader
                 title={
                   isEditing ? (
-                    // ` یرایش مسیر ارتباطی ${
-                    //   SOCIAL_MEDIA_TYPES[formik.values.type]
-                    // }`
-
-                    <Typography variant="subtitle1" color="white">
-                      ویرایش مسیر ارتباطی
-                    </Typography>
+                    <Stack flexDirection={"row"}>
+                      <Typography>ویرایش مسیر ارتباطی</Typography>
+                      <Typography variant="subtitle1" color="white">
+                        {SOCIAL_MEDIA_TYPES[getValues("type")]}
+                      </Typography>
+                    </Stack>
                   ) : (
                     <Typography variant="subtitle1" color="white">
                       افزودن مسیر ارتباطی
@@ -205,67 +211,51 @@ const App: FC = () => {
                           نوع*
                         </InputLabel>
                         <Select
-                          labelId="type-value-select-label"
+                          {...register("type", { required: true })}
                           label="نوع*"
-                          name="type"
-                          value={formik.values.type}
-                          onChange={formik.handleChange}
-                          renderValue={(value) => (
+                          renderValue={(value: string | number) => (
                             <div
                               style={{ display: "flex", alignItems: "center" }}
                             >
-                              {getIcon(formik.values.type)}
-                              {value}
+                              {SOCIAL_MEDIA_TYPES[value]}
                             </div>
                           )}
                         >
-                          <MenuItem value="instagram">
-                            <Typography>
-                              {SOCIAL_MEDIA_TYPES.instagram}
-                            </Typography>
+                          <MenuItem value="" disabled>
+                            نوع را انتخاب کنید
                           </MenuItem>
-                          <MenuItem value="facebook">
-                            <Typography>
-                              {SOCIAL_MEDIA_TYPES.facebook}
-                            </Typography>
-                          </MenuItem>
-                          <MenuItem value="telegram">
-                            <Typography>
-                              {SOCIAL_MEDIA_TYPES.telegram}
-                            </Typography>
-                          </MenuItem>
-                          <MenuItem value="twitter">
-                            <Typography>
-                              {SOCIAL_MEDIA_TYPES.twitter}
-                            </Typography>
-                          </MenuItem>
-                          <MenuItem value="linkedin">
-                            <Typography>
-                              {SOCIAL_MEDIA_TYPES.linkedin}
-                            </Typography>
-                          </MenuItem>
-                          <MenuItem value="website">
-                            <Typography>
-                              {SOCIAL_MEDIA_TYPES.website}
-                            </Typography>
-                          </MenuItem>
+                          {Object.keys(SOCIAL_MEDIA_TYPES).map((key) => (
+                            <MenuItem key={key} value={key}>
+                              <Typography>{SOCIAL_MEDIA_TYPES[key]}</Typography>
+                            </MenuItem>
+                          ))}
                         </Select>
+
+                        {errors.type?.type === "required" && (
+                          <Typography
+                            variant="caption"
+                            color="error"
+                            role="alert"
+                          >
+                            لطفا نوع شبکه اجتماعی را انتخاب کنید
+                          </Typography>
+                        )}
                       </FormControl>
                     </StyledMenuBox>
                   </Grid>
                   <Grid item xs={4}>
-                    <MainInput
-                      label="لینک"
-                      {...formik.getFieldProps("link")}
-                      error={Boolean(formik.errors.link && formik.touched.link)}
-                    />
+                    <StyledMainInput>
+                      <TextField
+                        fullWidth
+                        label={"لینک"}
+                        {...register("link")}
+                      />
+                    </StyledMainInput>{" "}
                   </Grid>
                   <Grid item xs={4}>
-                    <MainInput
-                      label="(ID) آی دی"
-                      {...formik.getFieldProps("id")}
-                      error={Boolean(formik.errors.link && formik.touched.link)}
-                    />
+                    <StyledMainInput>
+                      <TextField fullWidth label={"آیدی"} {...register("id")} />
+                    </StyledMainInput>{" "}
                   </Grid>
                 </Grid>
               </CardContent>
@@ -275,14 +265,12 @@ const App: FC = () => {
                 </Button>
                 <Button
                   type="submit"
-                  disabled={formik.isSubmitting}
                   variant="contained"
                 >
                   {isEditing ? (
                     <Typography>
-                      {`ویرایش مسیر ارتباطی ${
-                        SOCIAL_MEDIA_TYPES[formik.values.type]
-                      }`}
+                      {`ویرایش مسیر ارتباطی
+                      `}
                     </Typography>
                   ) : (
                     <Typography>افزودن مسیر ارتباطی</Typography>
