@@ -53,16 +53,14 @@ const MainPageComponent: FC = () => {
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openAlertBox, setOpenAlertBox] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [socialMediaList, setSocialMediaList] = useState<ISocialMediaList[]>(
-    [
-      {
-        social_id: "test@test",
-        link: "https://google.com",
-        type: "instagram",
-        id: "test",
-      },
-    ]
-  );
+  const [socialMediaList, setSocialMediaList] = useState<ISocialMediaList[]>([
+    {
+      social_id: "test@test",
+      link: "https://google.com",
+      type: "instagram",
+      id: "test",
+    },
+  ]);
   const [currentItemId, setCurrentItemId] = useState<string>("");
 
   const { data: socialsList, refetch: refetchSocialMediaList } = useQuery({
@@ -287,6 +285,7 @@ const MainPageComponent: FC = () => {
                   <Grid item xs={4}>
                     <MainInputStyled>
                       <TextField
+                        InputLabelProps={{ shrink: true }}
                         fullWidth
                         label={"لینک"}
                         {...register("link")}
@@ -296,6 +295,7 @@ const MainPageComponent: FC = () => {
                   <Grid item xs={4}>
                     <MainInputStyled>
                       <TextField
+                        InputLabelProps={{ shrink: true }}
                         fullWidth
                         label={"آیدی"}
                         {...register("social_id")}
