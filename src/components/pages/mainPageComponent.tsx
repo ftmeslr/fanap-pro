@@ -254,6 +254,9 @@ const MainPageComponent: FC = () => {
                           name="type"
                           control={control}
                           defaultValue={""}
+                          rules={{
+                            required: "لطفا نوع شبکه اجتماعی خود را مشخص کنید",
+                          }}
                           render={({ field }) => (
                             <Select {...field} label="نوع*">
                               <MenuItem value="" disabled>

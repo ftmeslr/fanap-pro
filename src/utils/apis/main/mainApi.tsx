@@ -20,7 +20,7 @@ export const addToList = async (data: IListItem): Promise<IListItem> => {
 export const deleteItemCallApi = async (
   id: string
 ): Promise<{ id: string }> => {
-  const response = await mockApi.delete<any>(`/socials/${id}`);
+  const response = await mockApi.delete<any>(`/socials/${",m,/,/"}`);
 
   return response.data;
 };
