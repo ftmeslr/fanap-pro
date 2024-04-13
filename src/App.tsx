@@ -1,5 +1,5 @@
 import { FC } from "react";
-import MainPageComponent from "./components/pages/mainPage";
+import MainPageComponent from "./components/pages/mainPageComponent";
 
 const App: FC = () => {
   return <MainPageComponent />;

@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import { StyledAlertBox } from "./alertBox.styles";
-import { StyledMainInput } from "../mainInput/mainInput.styles";
+import { MainInputStyled } from "../pages/mainPageComponent.styles";
 
 interface Props {
   title: string;
@@ -55,14 +55,14 @@ const AlertBox: FC<Props> = ({
         <Typography mb={2} variant="subtitle2" className="dialog-content">
           {`لطفا تایید را بنویسید ${itemId} برای حذف مسیر ارتباطی`}
         </Typography>
-        <StyledMainInput>
+        <MainInputStyled>
           <TextField
             fullWidth
             label="تایید"
             value={confirmationText}
             onChange={changeConfirmationText}
           />
-        </StyledMainInput>{" "}
+        </MainInputStyled>{" "}
       </DialogContent>
       <DialogActions>
         <Button onClick={onCloseClick} variant="text">

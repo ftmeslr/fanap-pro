@@ -23,18 +23,20 @@ import { useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { AxiosError } from "axios";
+import SOCIAL_MEDIA_TYPES from "../../constants";
 import {
   addToList,
   deleteItemCallApi,
-  getSocialsList,
   editListItemCallApi,
+  getSocialsList,
 } from "../../utils/apis/main/mainApi";
-import AlertBox from "../alertBox/alertBox";
 import getIcon from "../../utils/getIcon";
-import SOCIAL_MEDIA_TYPES from "../../constants";
-import { StyledMenuBox } from "../../test.styles";
-import { StyledMainInput } from "../mainInput/mainInput.styles";
+import AlertBox from "../alertBox/alertBox";
+import {
+  MainInputStyled,
+  ManinPageBoxStyled,
+  MenuBoxStyled,
+} from "./mainPageComponent.styles";
 
 interface SocialMediaListType {
   social_id: string;
@@ -76,16 +78,14 @@ const MainPageComponent: FC = () => {
     },
   });
 
-  console.log(socialsList);
-
   const { mutate: addListMutation, isLoading: sendOtpCodeIsLoading } =
     useMutation(addToList, {
       onSuccess() {
         refetchSocialMediaList();
         toast.success("آیتم مورد نظر با موفقیت اضافه شد");
       },
-      onError(res: AxiosError<{ result: { otp: string } }>) {
-        toast.error(res?.response?.data.result.otp);
+      onError() {
+        toast.error("مشکلی به وجود آمده است");
       },
     });
 
@@ -95,8 +95,8 @@ const MainPageComponent: FC = () => {
         refetchSocialMediaList();
         toast.success("آیتم مورد نظر با موفقیت ویرایش شد");
       },
-      onError(res: AxiosError<{ result: { otp: string } }>) {
-        toast.error(res?.response?.data.result.otp);
+      onError() {
+        toast.error("مشکلی به وجود آمده است");
       },
     });
   const { mutate: deleteMutation, isLoading: deleteMutationIsLoading } =
@@ -106,8 +106,8 @@ const MainPageComponent: FC = () => {
 
         toast.success("آیتم مورد نظر با موفقیت حذف شد");
       },
-      onError(res: AxiosError<{ result: { otp: string } }>) {
-        toast.error(res?.response?.data.result.otp);
+      onError() {
+        toast.error("مشکلی به وجود آمده است");
       },
     });
 
@@ -200,13 +200,7 @@ const MainPageComponent: FC = () => {
     }, 400);
   };
   return (
-    <Stack
-      sx={{
-        background: "#151b25",
-        height: "100vh",
-        padding: "5% 10%",
-      }}
-    >
+    <ManinPageBoxStyled>
       <Box
         sx={{
           backgroundColor: "#202a35",
@@ -259,7 +253,7 @@ const MainPageComponent: FC = () => {
               <CardContent>
                 <Grid container justifyContent="space-evenly" spacing={2}>
                   <Grid item xs={4}>
-                    <StyledMenuBox>
+                    <MenuBoxStyled>
                       <FormControl fullWidth sx={{ minWidth: 120 }}>
                         <InputLabel id="type-value-select-label">
                           نوع*
@@ -294,25 +288,25 @@ const MainPageComponent: FC = () => {
                           </Typography>
                         )}
                       </FormControl>
-                    </StyledMenuBox>
+                    </MenuBoxStyled>
                   </Grid>
                   <Grid item xs={4}>
-                    <StyledMainInput>
+                    <MainInputStyled>
                       <TextField
                         fullWidth
                         label={"لینک"}
                         {...register("link")}
                       />
-                    </StyledMainInput>{" "}
+                    </MainInputStyled>{" "}
                   </Grid>
                   <Grid item xs={4}>
-                    <StyledMainInput>
+                    <MainInputStyled>
                       <TextField
                         fullWidth
                         label={"آیدی"}
                         {...register("social_id")}
                       />
-                    </StyledMainInput>{" "}
+                    </MainInputStyled>{" "}
                   </Grid>
                 </Grid>
               </CardContent>
@@ -424,7 +418,7 @@ const MainPageComponent: FC = () => {
             : ""}
         </List>
       </Box>
-    </Stack>
+    </ManinPageBoxStyled>
   );
 };
 
