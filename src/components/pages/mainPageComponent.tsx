@@ -31,19 +31,14 @@ import {
   getSocialsList,
 } from "../../utils/apis/main/mainApi";
 import getIcon from "../../utils/getIcon";
-import AlertBox from "../alertBox/alertBox";
+import AlertBox from "../ui/alertBox/alertBox";
 import {
   MainInputStyled,
   ManinPageBoxStyled,
   MenuBoxStyled,
 } from "./mainPageComponent.styles";
-
-interface SocialMediaListType {
-  social_id: string;
-  link: string;
-  type: string;
-  id: string;
-}
+import { SocialItem } from "../ui/socialItem/socialItem";
+import { SocialMediaListType } from "./mainPageComponent.types";
 
 const MainPageComponent: FC = () => {
   const {
@@ -177,7 +172,6 @@ const MainPageComponent: FC = () => {
     setIsEditing(true);
     setValue("social_id", item.social_id);
     setValue("link", item.link);
-    console.log(item.type);
     setValue("type", item.type);
     setCurrentItemId(item.id);
   };
@@ -329,93 +323,18 @@ const MainPageComponent: FC = () => {
           </form>
         </Collapse>
         <List>
-          {socialsList && socialsList.length
-            ? socialsList.map((item) => (
-                <Box
-                  sx={{
-                    backgroundColor: "#323d48",
-                    padding: "10px",
-                    marginTop: "20px",
-                    borderRadius: "8px",
-                    color: "white",
-                  }}
-                  key={item.id}
-                >
-                  <ListItem>
-                    <Grid
-                      container
-                      alignItems="center"
-                      display={"flex"}
-                      justifyContent={"space-between"}
-                    >
-                      <Stack
-                        flexDirection={"row"}
-                        alignItems={"center"}
-                        columnGap={2}
-                      >
-                        <Grid
-                          item
-                          display={"flex"}
-                          flexDirection={"row"}
-                          alignItems={"center"}
-                        >
-                          {getIcon(item.type)}{" "}
-                          <Typography sx={{ marginLeft: "2px" }}>
-                            {SOCIAL_MEDIA_TYPES[item.type]}{" "}
-                          </Typography>
-                        </Grid>
-                        <Grid
-                          item
-                          display={"flex"}
-                          flexDirection={"row"}
-                          alignItems={"center"}
-                        >
-                          <Typography> آیدی:</Typography>
-                          <Typography sx={{ marginLeft: "4px" }}>
-                            {" "}
-                            {item.id}{" "}
-                          </Typography>
-                        </Grid>
-
-                        <Grid
-                          item
-                          display={"flex"}
-                          flexDirection={"row"}
-                          alignItems={"center"}
-                        >
-                          <Typography> لینک:</Typography>
-                          <Typography sx={{ marginLeft: "4px" }}>
-                            {" "}
-                            {item.link}{" "}
-                          </Typography>
-                        </Grid>
-                      </Stack>
-                      <Stack flexDirection={"row"}>
-                        <Grid item>
-                          <Button
-                            onClick={() => editItem(item)}
-                            variant="text"
-                            startIcon={getIcon("edit")}
-                          >
-                            ویرایش
-                          </Button>
-                        </Grid>
-                        <Grid item>
-                          <Button
-                            color="error"
-                            onClick={() => deleteButtonClick(item.id)}
-                            variant="text"
-                            startIcon={getIcon("delete")}
-                          >
-                            حذف
-                          </Button>
-                        </Grid>
-                      </Stack>
-                    </Grid>
-                  </ListItem>
-                </Box>
-              ))
-            : ""}
+          {socialsList && socialsList.length ? (
+            socialsList.map((item, index) => (
+              <SocialItem
+                key={index}
+                item={item}
+                deleteButtonClick={deleteButtonClick}
+                editItem={editItem}
+              />
+            ))
+          ) : (
+            <></>
+          )}
         </List>
       </Box>
     </ManinPageBoxStyled>

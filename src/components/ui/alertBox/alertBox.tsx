@@ -1,32 +1,24 @@
-import { useState, ChangeEvent } from "react";
-import type { FC } from "react";
 import {
   Button,
-  Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
   TextField,
   Typography,
 } from "@mui/material";
+import type { FC } from "react";
+import { ChangeEvent, useState } from "react";
+import { MainInputStyled } from "../../pages/mainPageComponent.styles";
 import { StyledAlertBox } from "./alertBox.styles";
-import { MainInputStyled } from "../pages/mainPageComponent.styles";
+import { IAlertBoxProps } from "./alertBox.types";
 
-interface Props {
-  title: string;
-  open: boolean;
-  itemId: string;
-  handleClose: () => void;
-  handleAction: () => void;
-}
-
-const AlertBox: FC<Props> = ({
+const AlertBox: FC<IAlertBoxProps> = ({
   title,
   open,
   itemId,
   handleClose,
   handleAction,
-}: Props) => {
+}: IAlertBoxProps) => {
   const [confirmationText, setConfirmationText] = useState<string>("");
 
   const changeConfirmationText = (e: ChangeEvent<HTMLInputElement>): void => {
