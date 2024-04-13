@@ -38,7 +38,7 @@ import {
   MenuBoxStyled,
 } from "./mainPageComponent.styles";
 import { SocialItem } from "../ui/socialItem/socialItem";
-import { SocialMediaListType } from "./mainPageComponent.types";
+import { ISocialMediaList } from "./mainPageComponent.types";
 
 const MainPageComponent: FC = () => {
   const {
@@ -48,12 +48,12 @@ const MainPageComponent: FC = () => {
     getValues,
     formState: { errors },
     control,
-  } = useForm<SocialMediaListType>();
+  } = useForm<ISocialMediaList>();
 
   const [openForm, setOpenForm] = useState<boolean>(false);
   const [openAlertBox, setOpenAlertBox] = useState<boolean>(false);
   const [isEditing, setIsEditing] = useState<boolean>(false);
-  const [socialMediaList, setSocialMediaList] = useState<SocialMediaListType[]>(
+  const [socialMediaList, setSocialMediaList] = useState<ISocialMediaList[]>(
     [
       {
         social_id: "test@test",
@@ -122,7 +122,7 @@ const MainPageComponent: FC = () => {
     setOpenAlertBox(false);
   };
 
-  const addListItem = (values: SocialMediaListType): void => {
+  const addListItem = (values: ISocialMediaList): void => {
     const found = socialMediaList.some(
       (item) =>
         item.social_id === values.social_id ||
@@ -145,7 +145,7 @@ const MainPageComponent: FC = () => {
     }
   };
 
-  const editListItem = (values: SocialMediaListType): void => {
+  const editListItem = (values: ISocialMediaList): void => {
     editListItemMutation({
       id: currentItemId,
       data: {
@@ -167,7 +167,7 @@ const MainPageComponent: FC = () => {
     closeAlertBox();
   };
 
-  const editItem = (item: SocialMediaListType): void => {
+  const editItem = (item: ISocialMediaList): void => {
     handleOpenForm();
     setIsEditing(true);
     setValue("social_id", item.social_id);
@@ -180,7 +180,7 @@ const MainPageComponent: FC = () => {
     handleCloseForm();
   };
 
-  const onSubmit: SubmitHandler<SocialMediaListType> = (values) => {
+  const onSubmit: SubmitHandler<ISocialMediaList> = (values) => {
     setTimeout(() => {
       if (isEditing) {
         editListItem(values);

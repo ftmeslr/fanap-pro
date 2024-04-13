@@ -1,8 +1,8 @@
-import { IGetSocialsListResponse } from "../../../utils/apis/main/mainApi.types";
-import { SocialMediaListType } from "../../pages/mainPageComponent.types";
+import { IListItem } from "../../../utils/apis/main/mainApi.types";
+import { ISocialMediaList } from "../../pages/mainPageComponent.types";
 
 export interface ISocialItemProps {
-  item: IGetSocialsListResponse;
-  editItem: (item: SocialMediaListType) => void;
+  item: IListItem;
+  editItem: (item: ISocialMediaList) => void;
   deleteButtonClick: (id: string) => void;
 }

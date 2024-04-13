@@ -4,6 +4,7 @@ import { ItemBoxStyled } from "./socialItem.styles";
 import getIcon from "../../../utils/getIcon";
 import { ISocialItemProps } from "./socailItem.types";
 import SOCIAL_MEDIA_TYPES from "../../../constants";
+import { ISocialMediaList } from "../../pages/mainPageComponent.types";
 
 export const SocialItem: FC<ISocialItemProps> = ({
   item,
@@ -38,7 +39,10 @@ export const SocialItem: FC<ISocialItemProps> = ({
               alignItems={"center"}
             >
               <Typography> آیدی:</Typography>
-              <Typography sx={{ marginLeft: "4px" }}> {item.id} </Typography>
+              <Typography sx={{ marginLeft: "4px" }}>
+                {" "}
+                {item.social_id}{" "}
+              </Typography>
             </Grid>
 
             <Grid
@@ -54,7 +58,7 @@ export const SocialItem: FC<ISocialItemProps> = ({
           <Stack flexDirection={"row"}>
             <Grid item>
               <Button
-                onClick={() => editItem(item)}
+                onClick={() => editItem(item as ISocialMediaList)}
                 variant="text"
                 startIcon={getIcon("edit")}
               >
@@ -64,7 +68,7 @@ export const SocialItem: FC<ISocialItemProps> = ({
             <Grid item>
               <Button
                 color="error"
-                onClick={() => deleteButtonClick(item.id)}
+                onClick={() => deleteButtonClick(item.id as string)}
                 variant="text"
                 startIcon={getIcon("delete")}
               >

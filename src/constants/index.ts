@@ -1,4 +1,3 @@
-// TODO: change any type
 const SOCIAL_MEDIA_TYPES: Record<PropertyKey, string> = {
   instagram: "اینستاگرام",
   facebook: "فیسبوک",

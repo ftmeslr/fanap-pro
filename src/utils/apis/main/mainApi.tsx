@@ -1,29 +1,36 @@
+import { ISocialItemProps } from "../../../components/ui/socialItem/socailItem.types";
 import { mockApi } from "../api";
-import { IGetSocialsListResponse } from "./mainApi.types";
+import { IEditListItemCallApiProps, IListItem } from "./mainApi.types";
 
 // Get getSocialsList list from API
-export const getSocialsList = async (): Promise<IGetSocialsListResponse[]> => {
-  const response = await mockApi.get<IGetSocialsListResponse[]>(`/socials`);
+export const getSocialsList = async (): Promise<IListItem[]> => {
+  const response = await mockApi.get<IListItem[]>(`/socials`);
 
   return response.data;
 };
 
-// Get getSocialsList list from API
-export const addToList = async (data: any): Promise<any> => {
-  const response = await mockApi.post<any>(`/socials`, data);
+// add item to social list
+export const addToList = async (data: IListItem): Promise<IListItem> => {
+  const response = await mockApi.post<IListItem>(`/socials`, data);
 
   return response.data;
 };
 
-// Get getSocialsList list from API
-export const deleteItemCallApi = async (id: any): Promise<any> => {
+// delete Item from socialList
+export const deleteItemCallApi = async (
+  id: string
+): Promise<{ id: string }> => {
   const response = await mockApi.delete<any>(`/socials/${id}`);
 
   return response.data;
 };
 
-export const editListItemCallApi = async ({ id, data }: any): Promise<any> => {
-  const response = await mockApi.put<any>(`/socials/${id}`, data);
+// edit Item from socialList
+export const editListItemCallApi = async ({
+  id,
+  data,
+}: IEditListItemCallApiProps): Promise<any> => {
+  const response = await mockApi.put<IListItem>(`/socials/${id}`, data);
 
   return response.data;
 };

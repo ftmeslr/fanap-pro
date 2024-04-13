@@ -1,4 +1,4 @@
-export interface SocialMediaListType {
+export interface ISocialMediaList {
   social_id: string;
   link: string;
   type: string;
