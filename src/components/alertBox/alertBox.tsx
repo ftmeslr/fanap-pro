@@ -9,7 +9,8 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-// import DialogContentText from '@mui/material/DialogContentText';
+import { StyledAlertBox } from "./alertBox.styles";
+import { StyledMainInput } from "../mainInput/mainInput.styles";
 
 interface Props {
   title: string;
@@ -48,18 +49,20 @@ const AlertBox: FC<Props> = ({
   };
 
   return (
-    <Dialog open={open} onClose={onCloseClick}>
-      <DialogTitle>{title}</DialogTitle>
-      <DialogContent>
-        <Typography>
+    <StyledAlertBox open={open} onClose={onCloseClick}>
+      <DialogTitle variant="subtitle1">{title}</DialogTitle>
+      <DialogContent className="dialog-content">
+        <Typography mb={2} variant="subtitle2" className="dialog-content">
           {`لطفا تایید را بنویسید ${itemId} برای حذف مسیر ارتباطی`}
         </Typography>
-        <TextField
-          label="تایید"
-          fullWidth
-          value={confirmationText}
-          onChange={changeConfirmationText}
-        />
+        <StyledMainInput>
+          <TextField
+            fullWidth
+            label="تایید"
+            value={confirmationText}
+            onChange={changeConfirmationText}
+          />
+        </StyledMainInput>{" "}
       </DialogContent>
       <DialogActions>
         <Button onClick={onCloseClick} variant="text">
@@ -74,7 +77,7 @@ const AlertBox: FC<Props> = ({
           حذف
         </Button>
       </DialogActions>
-    </Dialog>
+    </StyledAlertBox>
   );
 };
 

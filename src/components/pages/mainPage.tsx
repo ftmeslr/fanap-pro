@@ -30,11 +30,11 @@ import {
   getSocialsList,
   editListItemCallApi,
 } from "../../utils/apis/main/mainApi";
-import AlertBox from "../alertBox/AlertBox";
+import AlertBox from "../alertBox/alertBox";
 import getIcon from "../../utils/getIcon";
 import SOCIAL_MEDIA_TYPES from "../../constants";
 import { StyledMenuBox } from "../../test.styles";
-import styles from "../mainInput/mainInput.styles";
+import { StyledMainInput } from "../mainInput/mainInput.styles";
 
 interface SocialMediaListType {
   social_id: string;
@@ -200,7 +200,6 @@ const MainPageComponent: FC = () => {
   const handleCancelForm = (): void => {
     handleCloseForm();
   };
-  const { StyledMainInput } = styles;
 
   const onSubmit: SubmitHandler<SocialMediaListType> = (values) => {
     setTimeout(() => {
