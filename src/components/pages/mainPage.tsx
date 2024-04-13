@@ -68,12 +68,7 @@ const MainPageComponent: FC = () => {
   );
   const [currentItemId, setCurrentItemId] = useState<string>("");
 
-  const {
-    data: socialsList,
-    isLoading: socialsListLoading,
-    isError: socialsListError,
-    refetch: refetchSocialMediaList,
-  } = useQuery({
+  const { data: socialsList, refetch: refetchSocialMediaList } = useQuery({
     queryKey: ["getSocialsList"],
     queryFn: () => getSocialsList(),
     onError() {
@@ -98,7 +93,7 @@ const MainPageComponent: FC = () => {
     useMutation(editListItemCallApi, {
       onSuccess() {
         refetchSocialMediaList();
-        toast.success("آیتم مورد نظر با موفقیت اضافه شد");
+        toast.success("آیتم مورد نظر با موفقیت ویرایش شد");
       },
       onError(res: AxiosError<{ result: { otp: string } }>) {
         toast.error(res?.response?.data.result.otp);
@@ -109,7 +104,7 @@ const MainPageComponent: FC = () => {
       onSuccess() {
         refetchSocialMediaList();
 
-        toast.success("آیتم مورد نظر با موفقیت اضافه شد");
+        toast.success("آیتم مورد نظر با موفقیت حذف شد");
       },
       onError(res: AxiosError<{ result: { otp: string } }>) {
         toast.error(res?.response?.data.result.otp);
@@ -156,13 +151,6 @@ const MainPageComponent: FC = () => {
   };
 
   const editListItem = (values: SocialMediaListType): void => {
-    const newSocialMediaList = [...socialMediaList];
-    const foundIndex = socialMediaList.findIndex(
-      (item) => item.social_id === currentItemId
-    );
-
-    console.log(values);
-
     editListItemMutation({
       id: currentItemId,
       data: {
@@ -171,8 +159,6 @@ const MainPageComponent: FC = () => {
         type: values.type,
       },
     });
-
-    // setSocialMediaList(newSocialMediaList);
     setIsEditing(false);
   };
 
@@ -183,7 +169,6 @@ const MainPageComponent: FC = () => {
 
   const deleteItem = (): void => {
     deleteMutation(currentItemId);
-
     closeAlertBox();
   };
 
@@ -217,13 +202,9 @@ const MainPageComponent: FC = () => {
   return (
     <Stack
       sx={{
-        display: "felx",
-        alignItems: "center",
-        justifyContent: "center",
-        // paddingX: "100px",
         background: "#151b25",
         height: "100vh",
-        padding: "20%",
+        padding: "5% 10%",
       }}
     >
       <Box

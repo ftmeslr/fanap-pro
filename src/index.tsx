@@ -6,6 +6,9 @@ import { QueryClient, QueryClientProvider } from "react-query";
 import App from "./App";
 import RTL from "./components/RTL";
 import theme from "./theme";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 const queryClient = new QueryClient();
 ReactDOM.render(
   <React.StrictMode>
@@ -14,7 +17,9 @@ ReactDOM.render(
       <ThemeProvider theme={theme}>
         <RTL>
           <CssBaseline />
-          {/* <ToastContainer
+
+          <App />
+          <ToastContainer
             position="top-center"
             autoClose={5000}
             hideProgressBar={false}
@@ -25,8 +30,7 @@ ReactDOM.render(
             draggable
             pauseOnHover
             limit={1}
-          /> */}
-          <App />
+          />
         </RTL>
       </ThemeProvider>
     </QueryClientProvider>
